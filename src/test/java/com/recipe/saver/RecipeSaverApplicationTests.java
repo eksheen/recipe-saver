@@ -1,4 +1,4 @@
-package com.recipesaver;
+package com.recipe.saver;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
