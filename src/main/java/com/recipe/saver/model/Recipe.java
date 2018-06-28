@@ -2,13 +2,28 @@ package com.recipe.saver.model;
 
 import java.util.List;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class Recipe {
+	
+  @Id
+  @GeneratedValue
+	public int recipeID;
 	
 	public String name;
 	
 	public String description;
 	
 	public List<Ingredient> ingredients;
+
+	public int getRecipeID() {
+		return recipeID;
+	}
+
+	public void setRecipeID(int recipeID) {
+		this.recipeID = recipeID;
+	}
 
 	public String getName() {
 		return name;

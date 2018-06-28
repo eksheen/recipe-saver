@@ -1,12 +1,22 @@
 package com.recipe.saver.model;
 
 public class Ingredient {
+	public int recipeID;
+	
 	public String name;
 	
 	public Double measurement;
 	
 	public String unit;
 	
+	public int getRecipeID() {
+		return recipeID;
+	}
+
+	public void setRecipeID(int recipeID) {
+		this.recipeID = recipeID;
+	}
+
 	public String description;
 
 	public String getName() {
