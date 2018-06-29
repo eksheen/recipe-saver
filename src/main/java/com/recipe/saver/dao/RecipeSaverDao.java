@@ -1,17 +1,15 @@
 package com.recipe.saver.dao;
 
-import static org.assertj.core.api.Assertions.in;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.recipe.saver.model.Ingredient;
@@ -24,12 +22,14 @@ public class RecipeSaverDao {
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	private static final String INSERT_RECIPE = "INSERT INTO recipes VALUES (:RecipeID, :Name, :Description);";
-
-//	private static final String INSERT_RECIPE = "INESRT INTO recipes VALUES (0, pizza, yum)";
 	
 	private static final String INSERT_INGREDIENT = "INSERT INTO ingredients (RecipeID, Name, Description, Measurement, Unit) VALUES (:recipeID, :name,:description,:measurement,:unit)";
 	
-	private static final String GET_ALL_RECIPES = "SELECT * recipes";
+	private static final String GET_ALL_RECIPES = "SELECT * FROM recipes";
+	
+	private static final String GET_RECIPE_BY_NAME = "SELECT * FROM recipes where name = :name";
+	
+	private static final String GET_INGREDIENTS_BY_RECIPE = "SELECT * FROM ingredients WHERE recipeID = :recipeID ";
 	
 	public boolean postRecipe(Recipe recipe) {
 		boolean success = false;		
@@ -69,8 +69,75 @@ public class RecipeSaverDao {
 		success = true;
 		return success;
 	}
+	
+	public List<Recipe> getAllRecipes() {
+		List<Recipe> allRecipes = new ArrayList<Recipe>();
+		allRecipes = namedParameterJdbcTemplate.query(GET_ALL_RECIPES, new RecipeRowMapper());
+		populateIngredients(allRecipes);
+		return allRecipes;
+	}
+	
+	public List<Recipe> getRecipesByName(String name) {
+		List<Recipe> recipesByName = new ArrayList<Recipe>();
+		Map<String, Object> recipeParamMap = new HashMap<String, Object>();
+		recipeParamMap.put("name", name);
+		recipesByName = namedParameterJdbcTemplate.query(GET_RECIPE_BY_NAME, recipeParamMap, new RecipeRowMapper());
+		populateIngredients(recipesByName);
+		return recipesByName;
+	}
+	
+	/**
+	 * Helper Method
+	 * @author eksheen
+	 *
+	 */
+	public List<Recipe> populateIngredients(List<Recipe> recipes) {
+		for(Recipe recipe : recipes) {
+			List<Ingredient> ingredients = new ArrayList<Ingredient>();
+			Map<String, Object> ingredientParamMap = new HashMap<String, Object>();	
+			ingredients.clear();
+			ingredientParamMap.put("recipeID", recipe.getRecipeID());
+			ingredients = namedParameterJdbcTemplate.query(GET_INGREDIENTS_BY_RECIPE, ingredientParamMap, new IngredientRowMapper());
+			ingredientParamMap.clear();
+			recipe.setIngredients(ingredients);
+		}
+		return recipes;
+	}
     
-    
+	private class RecipeRowMapper implements RowMapper<Recipe> {
+		/**
+		 * Row Mapper for Shipper object for linking shipper numbers
+		 *
+		 * @return Shipper object
+		 */
+		@Override
+		public Recipe mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Recipe recipe = new Recipe();
+			recipe.setRecipeID(rs.getInt("RecipeID"));
+			recipe.setName(rs.getString("Name"));
+			recipe.setDescription(rs.getString("Description"));
+
+			return recipe;
+		}
+	}
+	
+	private class IngredientRowMapper implements RowMapper<Ingredient> {
+		/**
+		 * Row Mapper for Shipper object for linking shipper numbers
+		 *
+		 * @return Shipper object
+		 */
+		@Override
+		public Ingredient mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Ingredient ingredient = new Ingredient();
+			ingredient.setRecipeID(rs.getInt("RecipeID"));
+			ingredient.setName(rs.getString("Name"));
+			ingredient.setDescription(rs.getString("Description"));
+			ingredient.setMeasurement(rs.getDouble("Measurement"));
+			ingredient.setUnit(rs.getString("Unit"));
+			return ingredient;
+		}
+	}
 	
 	
 }

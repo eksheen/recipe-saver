@@ -1,5 +1,7 @@
 package com.recipe.saver.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,14 @@ public class RecipeSaverService {
 	
 	public boolean postRecipe(Recipe recipe) {
 		return recipeSaverDao.postRecipe(recipe);
+	}
+	
+	public List<Recipe> getAllRecipes() {
+		return recipeSaverDao.getAllRecipes();
+	}
+	
+	public List<Recipe> getRecipesByName(String name) {
+		return recipeSaverDao.getRecipesByName(name);
 	}
 	
 }

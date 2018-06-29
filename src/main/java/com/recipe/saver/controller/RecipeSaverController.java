@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,14 +20,20 @@ public class RecipeSaverController {
 	@Autowired
 	RecipeSaverService recipeSaverService;
 	
-	@RequestMapping(value = "/getRecipe", method = RequestMethod.GET , produces = "application/json")
-    public Recipe getRecipe() {
-		Recipe pizza = getPizza();
-        return pizza;
+	@RequestMapping(value = "/get-all-recipes", method = RequestMethod.GET , produces = "application/json")
+    public List<Recipe> getAllRecipes() {
+		List<Recipe> allRecipes = recipeSaverService.getAllRecipes();  
+        return allRecipes;
+    }
+	
+	@RequestMapping(value = "/get-recipes-by-name/{name}", method = RequestMethod.GET , produces = "application/json")
+    public List<Recipe> getRecipesByName(@PathVariable String name) {
+		List<Recipe> recipesByName = recipeSaverService.getRecipesByName(name);  
+        return recipesByName;
     }
 	
 	
-	@RequestMapping(value = "/postRecipe", method = RequestMethod.POST , produces = "application/json")
+	@RequestMapping(value = "/post-recipe", method = RequestMethod.POST , produces = "application/json")
     public void postRecipe() {
 		Recipe pizza = getPizza();
 		recipeSaverService.postRecipe(pizza);
