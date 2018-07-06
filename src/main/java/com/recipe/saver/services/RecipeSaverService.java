@@ -25,4 +25,8 @@ public class RecipeSaverService {
 		return recipeSaverDao.getRecipesByName(name);
 	}
 	
+	public boolean deleteRecipe(String name) {
+		return recipeSaverDao.deleteRecipe(name);
+	}
+	
 }

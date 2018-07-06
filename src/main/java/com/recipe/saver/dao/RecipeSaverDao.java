@@ -29,7 +29,11 @@ public class RecipeSaverDao {
 	
 	private static final String GET_RECIPE_BY_NAME = "SELECT * FROM recipes where name = :name";
 	
+	private static final String DELETE_RECIPE_BY_NAME = "DELETE FROM recipes where name = :name";
+	
 	private static final String GET_INGREDIENTS_BY_RECIPE = "SELECT * FROM ingredients WHERE recipeID = :recipeID ";
+	
+	
 	
 	public boolean postRecipe(Recipe recipe) {
 		boolean success = false;		
@@ -84,6 +88,17 @@ public class RecipeSaverDao {
 		recipesByName = namedParameterJdbcTemplate.query(GET_RECIPE_BY_NAME, recipeParamMap, new RecipeRowMapper());
 		populateIngredients(recipesByName);
 		return recipesByName;
+	}
+	
+	public boolean deleteRecipe(String name) {
+		Map<String, Object> recipeParamMap = new HashMap<String, Object>();
+		recipeParamMap.put("name", name);
+		int rowsAffected = namedParameterJdbcTemplate.update(DELETE_RECIPE_BY_NAME, recipeParamMap);
+		if(rowsAffected > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**

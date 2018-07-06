@@ -40,6 +40,11 @@ public class RecipeSaverController {
 		
     }
 	
+	@RequestMapping(value = "/delete-recipe/{name}", method = RequestMethod.GET , produces = "application/json")
+    public void deleteRecipe(@PathVariable String name) {
+		recipeSaverService.deleteRecipe(name);
+    }
+	
 	public Recipe getPizza() {
 		Ingredient dough = new Ingredient();
 		Ingredient tomatoSauce = new Ingredient();
