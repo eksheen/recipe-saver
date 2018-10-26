@@ -9,19 +9,21 @@ public class Recipe {
 	
   @Id
   @GeneratedValue
-	public int recipeID;
+	public String recipeID;
 	
 	public String name;
 	
 	public String description;
 	
 	public List<Ingredient> ingredients;
+	
+	public List<String> Steps;
 
-	public int getRecipeID() {
+	public String getRecipeID() {
 		return recipeID;
 	}
 
-	public void setRecipeID(int recipeID) {
+	public void setRecipeID(String recipeID) {
 		this.recipeID = recipeID;
 	}
 
@@ -47,5 +49,13 @@ public class Recipe {
 
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public List<String> getSteps() {
+		return Steps;
+	}
+
+	public void setSteps(List<String> steps) {
+		Steps = steps;
 	}
 }

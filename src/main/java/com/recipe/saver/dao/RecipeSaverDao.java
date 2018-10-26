@@ -21,17 +21,17 @@ public class RecipeSaverDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
-	private static final String INSERT_RECIPE = "INSERT INTO recipes VALUES (:RecipeID, :Name, :Description);";
+	private static final String INSERT_RECIPE = "INSERT INTO RECIPIESAVER.RECIPES VALUES (:RecipeID, :Name, :Description)";
 	
-	private static final String INSERT_INGREDIENT = "INSERT INTO ingredients (RecipeID, Name, Description, Measurement, Unit) VALUES (:recipeID, :name,:description,:measurement,:unit)";
+	private static final String INSERT_INGREDIENT = "INSERT INTO RECIPIESAVER.INGREDIENTS (Recipe_ID, Name, Description, Measurement, Unit) VALUES (:recipeID, :name,:description,:measurement,:unit)";
 	
-	private static final String GET_ALL_RECIPES = "SELECT * FROM recipes";
+	private static final String GET_ALL_RECIPES = "SELECT * FROM RECIPIESAVER.RECIPES";
 	
-	private static final String GET_RECIPE_BY_NAME = "SELECT * FROM recipes where name = :name";
+	private static final String GET_RECIPE_BY_NAME = "SELECT * FROM RECIPIESAVER.RECIPES where name = :name";
 	
-	private static final String DELETE_RECIPE_BY_NAME = "DELETE FROM recipes where name = :name";
+	private static final String DELETE_RECIPE_BY_NAME = "DELETE FROM RECIPIESAVER.RECIPES where name = :name";
 	
-	private static final String GET_INGREDIENTS_BY_RECIPE = "SELECT * FROM ingredients WHERE recipeID = :recipeID ";
+	private static final String GET_INGREDIENTS_BY_RECIPE = "SELECT * FROM RECIPIESAVER.INGREDIENTS WHERE RECIPE_ID = :recipeID ";
 	
 	
 	
@@ -128,7 +128,7 @@ public class RecipeSaverDao {
 		@Override
 		public Recipe mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Recipe recipe = new Recipe();
-			recipe.setRecipeID(rs.getInt("RecipeID"));
+			recipe.setRecipeID(rs.getString("Recipe_ID"));
 			recipe.setName(rs.getString("Name"));
 			recipe.setDescription(rs.getString("Description"));
 
@@ -145,7 +145,7 @@ public class RecipeSaverDao {
 		@Override
 		public Ingredient mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Ingredient ingredient = new Ingredient();
-			ingredient.setRecipeID(rs.getInt("RecipeID"));
+			ingredient.setRecipeID(rs.getInt("Recipe_ID"));
 			ingredient.setName(rs.getString("Name"));
 			ingredient.setDescription(rs.getString("Description"));
 			ingredient.setMeasurement(rs.getDouble("Measurement"));

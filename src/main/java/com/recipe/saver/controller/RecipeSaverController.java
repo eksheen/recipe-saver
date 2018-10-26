@@ -40,7 +40,7 @@ public class RecipeSaverController {
 		
     }
 	
-	@RequestMapping(value = "/delete-recipe/{name}", method = RequestMethod.GET , produces = "application/json")
+	@RequestMapping(value = "/delete-recipe/{name}", method = RequestMethod.DELETE , produces = "application/json")
     public void deleteRecipe(@PathVariable String name) {
 		recipeSaverService.deleteRecipe(name);
     }
@@ -52,6 +52,7 @@ public class RecipeSaverController {
 		Ingredient pepperoni = new Ingredient();
 		Recipe pizzaRecipe = new Recipe();
 		List<Ingredient> pizzaIngredients = new ArrayList<Ingredient>();
+		List<String> pizzaRecipieSteps = new ArrayList<String>();
 		
 		dough.setName("pizza dough");
 		dough.setMeasurement(1.00);
@@ -68,9 +69,9 @@ public class RecipeSaverController {
 		cheese.setUnit("cup");
 		cheese.setDescription("");
 		
-		pepperoni.setName("pizza dough");
-		pepperoni.setMeasurement(1.00);
-		pepperoni.setUnit("pound");
+		pepperoni.setName("pepperoni");
+		pepperoni.setMeasurement(20.00);
+		pepperoni.setUnit("slices");
 		pepperoni.setDescription("");
 		
 		pizzaIngredients.add(dough);
@@ -81,6 +82,15 @@ public class RecipeSaverController {
 		pizzaRecipe.setDescription("A delicious pepperoni pizza");
 		pizzaRecipe.setName("Pepperoni Pizza");
 		pizzaRecipe.setIngredients(pizzaIngredients);
+		
+		String step1 = "roll dough out into a flat circle";
+		String step2 = "gently smooth tomato sauce out over the dough";
+		String step3 = "sprinkle shredded mozzarella over the top of the pizza";
+		String step4 = "place all 20 pepperoni's on the pizza";	
+		pizzaRecipieSteps.add(step1);
+		pizzaRecipieSteps.add(step2);
+		pizzaRecipieSteps.add(step3);
+		pizzaRecipieSteps.add(step4);
 		
 		return pizzaRecipe;
 	}

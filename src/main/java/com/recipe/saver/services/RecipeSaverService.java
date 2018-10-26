@@ -1,6 +1,7 @@
 package com.recipe.saver.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,9 @@ public class RecipeSaverService {
 	public RecipeSaverDao recipeSaverDao;
 	
 	public boolean postRecipe(Recipe recipe) {
+        UUID uuid = UUID.randomUUID();
+        String randomUUIDString = uuid.toString();
+        recipe.setRecipeID(randomUUIDString);
 		return recipeSaverDao.postRecipe(recipe);
 	}
 	
